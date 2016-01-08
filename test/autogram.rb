@@ -4,7 +4,8 @@ require 'minitest/autorun'
 require 'yaml'
 
 require_relative 'helpers/base_test'
-require_relative 'autogram_page_login'
+require_relative 'helpers/login_helpers'
+require_relative 'helpers/navigation_helpers'
 
 BROWSER = 'firefox'
 
@@ -13,13 +14,15 @@ class Autogram < Minitest::Test
         @test_beginning_time = Time.now
         puts "Running Setup"
         @properties = YAML.load_file("config/properties.yml")
+        @uris = YAML.load_file("config/uris.yml")
         @driver = configure_driver(BROWSER)
+        @domain = 'http://www.instagram.com'
         @wait = set_explicit_wait(20)
     end
 
     def test_login
         puts "Login Test:"
-        navigate_login(@driver, @domain)
+        navigate_login(@driver, @domain, @uris)
 
         puts "Logging in with valid email and password"
         login(@driver, @properties['test_account']['username'], @properties['test_account']['password'])

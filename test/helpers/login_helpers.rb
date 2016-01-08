@@ -1,9 +1,3 @@
-def navigate_login(driver, domain)
-    puts "Navigating to login page."
-    go_to_url(driver, 'http://www.instagram.com')
-    sleep random_wait_length
-end
-
 def login(driver, username='', password='')
 	enter_username(driver, username)
     sleep random_wait_length
