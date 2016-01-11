@@ -1,11 +1,16 @@
 def login(driver, username='', password='')
     # TODO: Handle the login with facebook case
+    change_to_login_form(driver)
 	enter_username(driver, username)
     sleep random_wait_length
 	enter_password(driver, password)
     sleep random_wait_length
 	click_login_button(driver)
     sleep random_wait_length
+end
+
+def change_to_login_form(driver)
+    driver.find_element(:xpath => '//a[contains(.,"Log in")]').click if driver.find_elements(:xpath => '//*[contains(.,"Have an account")]').size > 0
 end
 
 def enter_username(driver, username)

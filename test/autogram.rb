@@ -17,7 +17,7 @@ class Autogram < Minitest::Test
         @properties = YAML.load_file("config/properties.yml")
         @uris = YAML.load_file("config/uris.yml")
         #@friends = YAML.load_file("config/friendlist.yml")
-        #@pending = YAML.load_file("config/pending.yml")
+        @pending = YAML.load_file("config/pending.yml")
         @blacklist = YAML.load_file("config/blacklist.yml")
         @driver = configure_driver(BROWSER)
         @domain = 'http://www.instagram.com'
@@ -31,7 +31,7 @@ class Autogram < Minitest::Test
         puts "Logging in with valid email and password"
         login(@driver, @properties['test_account']['username'], @properties['test_account']['password'])
         assert(@driver.find_elements(:xpath => '//*[contains(.,"' + @properties['test_account']['username'] + '")]'), "FAILURE: Username not appearing on page")
-        @driver.navigate.refresh if seeding_followers?(@driver)
+        @driver.navigate.refresh if seed_followers?(@driver, @pending)
         load_more(@driver)
         load_more(@driver)
         load_more(@driver)
