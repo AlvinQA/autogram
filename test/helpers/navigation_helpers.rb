@@ -1,6 +1,12 @@
-def navigate_login(driver, domain, uris)
+def navigate_to_login(driver, domain, uris)
     puts "Navigating to login page."
     go_to_url(driver, domain + uris['login'])
+    sleep random_wait_length
+end
+
+def navigate_to_dashboard(driver, domain, uris)
+    puts "Navigating to dashboard."
+    go_to_url(driver, domain + uris['dashboard'])
     sleep random_wait_length
 end
 

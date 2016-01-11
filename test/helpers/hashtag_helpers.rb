@@ -1,5 +1,4 @@
 def login(driver, username='', password='')
-    # TODO: Handle the login with facebook case
 	enter_username(driver, username)
     sleep random_wait_length
 	enter_password(driver, password)

@@ -47,7 +47,7 @@ def random_letter
 end
 
 def random_wait_length
-	return Random.rand(5)
+	return 1 + Random.rand(4)
 end
 
 def compare_hash(hash1, hash2)
@@ -100,54 +100,17 @@ def get_current_url(driver)
 	return driver.current_url
 end
 
-def show_wait_spinner() # stolen from http://stackoverflow.com/a/10263337, and viciously butchered
-	loader = [["  \\o/\n   |\n  / \\\nW\n","   /o/\n   /\n  //\n A\n","    _\n  =-o\n    ¯\n  I\n",
-		"  \\ \\\n    \\\n    \\o\\\n   T\n","  | |\n   |\n  |o|\n    I\n","    / /\n    /\n  /o/\n     N\n",
-		"  _\n  o-=\n  ¯\n      G\n","  \\o\\\n    \\\n    \\\\\n       !\n","  \\o/\n   |\n  / \\\n        !\n",
-		"  _o_\n   |\n  / \\\n         !\n","   o\n  /|\\\n  / \\\nWAITING!!!\n","  _o_\n   |\n  / \\\nWAITING!!!"],
-		[">))'>","    >))'>","        >))'>","    <'((<","<'((<"],
-		["        /\\\n       /__\\_{)\n     W|IT!!)__\\\n       \\  /  (\n        \\/   )\n            /|\n            \\ \\\n            ~ ~",
-		"         /|   \\\n        /_|_{)/\nAIT!!   | |  )\n        \\ |  (\n         \\|  )\n            /|\n            \\ \\\n            ~ ~",
-		"              \\\n          /|{)/\nAIT!!    WA|T)\n          \\| (\n             )\n            /|\n            \\ \\\n            ~ ~"],
-		["    /\\O\n     /\\/\n    /\\\n   /  \\\n WAI  NG!","     _O\n   //|_\n    |\n   /|\n   TING",
-		"      O\n     /_\n     |\\\n    / |\n  ITING"]]
-	iter = 0
-	colorizer = Lolize::Colorizer.new
-	spinner = Thread.new do
-		rand_loader = Random.new.rand(loader.length)
-		while iter do
-			colorizer.write loader[rand_loader].rotate!.first
-			sleep 0.15
-			print ("\e[A"*loader[rand_loader].first.count("\n")) + "\r\e[J"
-		end
-	end
-	yield.tap{
-		iter = false
-		spinner.join
-	}
-end
-
-def get_matts_attention()
-	iter = 0
-	colorizer = Lolize::Colorizer.new
-	spinner = Thread.new do
-		while iter do
-			colorizer.write "PAY ATTENTION DUMMY PAY ATTENTION DUMMY PAY ATTENTION DUMMY"
-			sleep 0.15
-      		print "\b"
-		end
-	end
-	yield.tap{
-		iter = false
-		spinner.join
-	}
-end
-
 def humanize_time seconds # stolen from http://stackoverflow.com/a/4136485
-  [[60, :seconds], [60, :minutes], [24, :hours], [1000, :days]].map{ |count, name|
-    if seconds > 0
-      seconds, n = seconds.divmod(count)
-      "#{n.to_i} #{name}"
-    end
-  }.compact.reverse.join(' ')
+	[[60, :s], [60, :m], [24, :h], [7, :w], [52, :y]].map{ |count, name|
+		if seconds > 0
+			seconds, n = seconds.divmod(count)
+			"#{n.to_i}#{name}"
+		end
+	}.compact.reverse.join(' ')
+end
+
+def save_last_run(properties)
+	# Converting to proper date format: .strftime("%b %d, %Y")
+	properties['test_account']['last_run'] = Time.now
+	File.open('config/properties.yml', 'w+') {|f| f.write properties.to_yaml }
 end
