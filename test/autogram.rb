@@ -28,11 +28,14 @@ class Autogram < Minitest::Test
     username_path = "//*[contains(.,'#{username}')]"
     assert(@driver.find_elements(:xpath => username_path).size > 0,
       "FAILURE: Username not appearing on page")
-    # @driver.navigate.refresh if seed_followers?(@driver, @pending)
-    # load_more(@driver)
-    # load_more(@driver)
-    # load_more(@driver)
-    # load_more(@driver)
+    close_dialog(@driver)
+    navigate_to_dashboard
+    followers = get_followers
+    close_dialog(@driver)
+    puts followers
+    following = get_following
+    close_dialog(@driver)
+    puts following
   end
 
   def teardown

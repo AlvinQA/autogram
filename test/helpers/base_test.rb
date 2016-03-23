@@ -6,8 +6,6 @@ def configure_driver(browser="firefox")
     driver = Selenium::WebDriver.for :safari
   elsif browser == 'firefox'
     driver = Selenium::WebDriver.for :firefox,:profile => configure_firefox_profile
-  elsif browser == 'sauce'
-    driver = Selenium::WebDriver.for :remote, :url => get_saucelabs_endpoint, :desired_capabilities => configure_saucelabs_profile
   end
   return driver
 end
@@ -24,14 +22,6 @@ def configure_firefox_profile
   profile['browser.helperApps.neverAsk.saveToDisk'] = "application/pdf"
   profile['pdfjs.disabled'] = true
   return profile
-end
-
-def configure_saucelabs_profile
-  return {:platform => "Mac OS X 10.9", :browserName => "Firefox", :name => name()}
-end
-
-def get_saucelabs_endpoint
-  return "http://mmeling:4320aa06-d65d-4786-8947-73f6bdabd77d@ondemand.saucelabs.com:80/wd/hub"
 end
 
 def go_to_url(driver, url)
@@ -112,5 +102,7 @@ end
 def save_last_run(properties)
   # Converting to proper date format: .strftime("%b %d, %Y")
   properties['test_account']['last_run'] = Time.now
-  File.open('config/properties.yml', 'w+') {|f| f.write properties.to_yaml }
+  File.open('test/config/properties.yml', 'w+') do |f|
+  	f.write properties.to_yaml
+  end
 end

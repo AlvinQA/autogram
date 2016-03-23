@@ -99,7 +99,7 @@ def wait_until_clickable(driver, type, path, wait_length=60)
   beginning_time = Time.now
   wait.until { driver.find_element(type, path).displayed? }
   driver.find_element(type, path).click
-  puts "Actually took #{humanize(Time.now - beginning_time)}"
+  puts "Actually took #{humanize_time(Time.now - beginning_time)}"
 end
 
 def get_current_url(driver)
