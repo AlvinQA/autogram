@@ -1,4 +1,4 @@
-login				:	/
-dashboard			:	/
-user_view			:	/
-tag_view		  	:	/explore/tags/
+login        :  /
+dashboard      :  /
+user_view      :  /
+tag_view        :  /explore/tags/

@@ -1,14 +1,14 @@
 def login(driver, username='', password='')
-	enter_username(driver, username)
+  enter_username(driver, username)
     sleep random_wait_length
-	enter_password(driver, password)
+  enter_password(driver, password)
     sleep random_wait_length
-	click_login_button(driver)
+  click_login_button(driver)
     sleep random_wait_length
 end
 
 def enter_username(driver, username)
-	puts "Entering username: #{username}"
+  puts "Entering username: #{username}"
     wait_until_visible(driver, :name, 'username')
     driver.find_element(:name => 'username').send_keys username
 end

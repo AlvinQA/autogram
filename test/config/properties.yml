@@ -1,7 +1,7 @@
 ---
 test_account:
-  email:
-  username:
-  password:
+  email: matt.meling@thecontrolgroup.com
+  username: autogramtest
+  password: ch3wB@cc4
   tags: space seperated tags to search
-  last_run:
+  last_run: 2016-01-11 15:12:20.264244000 -08:00
