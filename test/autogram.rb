@@ -27,7 +27,7 @@ class Autogram < Minitest::Test
     close_dialog
     @whitelist = generate_whitelist
     @greylist = update_greylist
-    new_follows = Array.new
+    new_follows = Hash.new
     # like all friendly people's posts
     @tags.each do |tag|
       navigate_to_tag(tag)
@@ -46,29 +46,29 @@ class Autogram < Minitest::Test
           if @driver.find_element(:xpath, follow).text == "FOLLOW"
             @driver.find_element(:xpath, follow).click
             name_path = "//*[@class='_4zhc5 _ook48']"
-            new_follows << @driver.find_element(:xpath => name_path).text
+            name = @driver.find_element(:xpath => name_path).text
+            new_follows[name] = Time.now
           end
         end
         sleep random_wait_length
         close_dialog
-        new_follows.each do |account|
-          navigate_to_profile(account)
-          if following_count > 0
-            open_followers_list
-            load_followers(100)
-            puts "done loading folks"
-            new_follows += follow_all_followers
-          end
-        end
       end
+      more_follows = Hash.new
+      puts "-----"
+      puts "new follows: #{new_follows}"
+      puts "-----"
+      new_follows.each do |k,v|
+        navigate_to_profile(k)
+        more_follows = more_follows.merge(follow_followers(20))
+        puts "-----"
+        puts "more follows: #{more_follows}"
+        puts "-----"
+      end
+      @greylist = @greylist.merge(more_follows)
     end
-    #loop through all followers
-    # => Follow ones that aren't followed
-    # => Add to new_follows list
-    # Loop through all new follows
-    # => Look at who follows them
-    # => follow everyone not followed by us
-    # => add each person followed to the greylist
+    File.open('test/config/greylist.yml', 'w+') do |f|
+      f.write @greylist.to_yaml
+    end
   end
 
   def teardown
