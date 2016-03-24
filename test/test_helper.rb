@@ -42,7 +42,7 @@ def random_letter
 end
 
 def random_wait_length
-  return 1 + Random.rand(4)
+  return 1 + Random.rand(2)
 end
 
 def compare_hash(h1, h2)
@@ -53,55 +53,47 @@ end
 
 def wait_until_visible(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting #{wait_length} seconds for #{path} to be visible"
+  #puts "Waiting #{wait_length} seconds for #{path} to be visible"
   beginning_time = Time.now
-  #show_wait_spinner{
   wait.until { driver.find_element(type, path).displayed? }
-  #}
-  puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
+  #puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
 end
 
 def wait_until_not_visible(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting #{wait_length} seconds for #{path} to no longer be visible"
+  #puts "Waiting #{wait_length} seconds for #{path} to no longer be visible"
   beginning_time = Time.now
-  #show_wait_spinner{
   wait.until { driver.find_elements(type, path).size == 0 }
-  #}
-  puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
+  #puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
 end
 
 def wait_for_element(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting #{wait_length} seconds for #{path} to be in DOM"
+  #puts "Waiting #{wait_length} seconds for #{path} to be in DOM"
   beginning_time = Time.now
-  #show_wait_spinner{
   wait.until { driver.find_element(type, path) }
-  #}
-  puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
+  #puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
 end
 
 def wait_for_element_to_disappear(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting #{wait_length} seconds for #{path} to no longer be in DOM"
+  #puts "Waiting #{wait_length} seconds for #{path} to no longer be in DOM"
   beginning_time = Time.now
-  #show_wait_spinner{
   wait.until { driver.find_elements(type, path).empty? }
-  #}
-  puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
+  #puts "Actually took #{humanize_time(Time.now - beginning_time)} to run"
 end
 
 def wait_until_clickable(driver, type, path, wait_length=60)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting #{wait_length} seconds for #{path} to be clickable"
+  #puts "Waiting #{wait_length} seconds for #{path} to be clickable"
   beginning_time = Time.now
   wait.until { driver.find_element(type, path).displayed? }
   driver.find_element(type, path).click
-  puts "Actually took #{humanize_time(Time.now - beginning_time)}"
+  #puts "Actually took #{humanize_time(Time.now - beginning_time)}"
 end
 
-def get_current_url(driver)
-  return driver.current_url
+def get_current_url
+  return @driver.current_url
 end
 
 def humanize_time seconds # stolen from http://stackoverflow.com/a/4136485
@@ -113,10 +105,9 @@ def humanize_time seconds # stolen from http://stackoverflow.com/a/4136485
    }.compact.reverse.join(' ')
  end
 
- def save_last_run(properties)
-  properties['test_account']['last_run'] = Time.now
+ def save_last_run
+  @properties['last_run'] = Time.now
   File.open('test/config/properties.yml', 'w+') do |f|
-    f.write properties.to_yaml
+    f.write @properties.to_yaml
   end
 end
-

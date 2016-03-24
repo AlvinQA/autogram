@@ -1,14 +1,14 @@
-def navigate_to_login(driver, domain, uris)
-  go_to_url(driver, domain << uris["login"])
+def navigate_to_login
+  go_to_url(@driver, @domain)
   sleep random_wait_length
 end
 
-def navigate_to_profile(user=@properties["test_account"]["username"])
-  go_to_url(@driver, @domain << user)
+def navigate_to_profile(user=@properties["username"])
+  go_to_url(@driver, "#{@domain}/#{user}")
   sleep random_wait_length
-end
+ end
 
-def navigate_to_tag(driver, domain, uris, tag)
-  go_to_url(driver, domain << uris["tag_view"] << tag)
+ def navigate_to_tag(tag)
+  go_to_url(@driver, "#{@domain}/explore/tags/#{tag}")
   sleep random_wait_length
 end
