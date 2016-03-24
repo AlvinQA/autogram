@@ -34,26 +34,26 @@ def go_to_url(driver, url)
 end
 
 def email_randomizer
-  return "qa" + Time.now.to_s.gsub(/[^0-9A-Za-z]/, '') + "@thecontrolgroup.com"
+  return "qa#{Time.now.to_s.gsub(/[^0-9A-Za-z]/, '')}@thecontrolgroup.com"
 end
 
 def random_letter
-  return (('A'..'P').to_a + ('R'..'W').to_a).sample
+  return (('A'..'P').to_a << ('R'..'W').to_a).sample
 end
 
 def random_wait_length
   return 1 + Random.rand(4)
 end
 
-def compare_hash(hash1, hash2)
-  puts hash1.select{|k,_| hash2.has_key? k}
-  puts hash2.select{|k,_| hash1.has_key? k}
-  return hash1.select{|k,_| hash2.has_key? k} == hash2.select{|k,_| hash1.has_key? k}
+def compare_hash(h1, h2)
+  puts h1.select{|k,_| h2.has_key? k}
+  puts h2.select{|k,_| h1.has_key? k}
+  return h1.select{|k,_| h2.has_key? k} == h2.select{|k,_| h1.has_key? k}
 end
 
 def wait_until_visible(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting up to " + wait_length.to_s + " seconds for " + path + " to be visible  "
+  puts "Waiting #{wait_length} seconds for #{path} to be visible"
   beginning_time = Time.now
   #show_wait_spinner{
   wait.until { driver.find_element(type, path).displayed? }
@@ -63,7 +63,7 @@ end
 
 def wait_until_not_visible(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting up to " + wait_length.to_s + " seconds for " + path + " to no longer be visible"
+  puts "Waiting #{wait_length} seconds for #{path} to no longer be visible"
   beginning_time = Time.now
   #show_wait_spinner{
   wait.until { driver.find_elements(type, path).size == 0 }
@@ -73,7 +73,7 @@ end
 
 def wait_for_element(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting up to " + wait_length.to_s + " seconds for " + path + " to be in DOM"
+  puts "Waiting #{wait_length} seconds for #{path} to be in DOM"
   beginning_time = Time.now
   #show_wait_spinner{
   wait.until { driver.find_element(type, path) }
@@ -83,7 +83,7 @@ end
 
 def wait_for_element_to_disappear(driver, type, path, wait_length=15)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  puts "Waiting up to " + wait_length.to_s + " seconds for " + path + " to no longer be in DOM"
+  puts "Waiting #{wait_length} seconds for #{path} to no longer be in DOM"
   beginning_time = Time.now
   #show_wait_spinner{
   wait.until { driver.find_elements(type, path).empty? }
@@ -93,9 +93,7 @@ end
 
 def wait_until_clickable(driver, type, path, wait_length=60)
   wait = Selenium::WebDriver::Wait.new(:timeout => wait_length)
-  wait_string = "Waiting up to #{wait_length.to_s} seconds for "
-  wait_string << "#{path} to be clickable"
-  puts wait_string
+  puts "Waiting #{wait_length} seconds for #{path} to be clickable"
   beginning_time = Time.now
   wait.until { driver.find_element(type, path).displayed? }
   driver.find_element(type, path).click
@@ -116,8 +114,9 @@ def humanize_time seconds # stolen from http://stackoverflow.com/a/4136485
  end
 
  def save_last_run(properties)
-  # Converting to proper date format: .strftime("%b %d, %Y")
   properties['test_account']['last_run'] = Time.now
-  File.open('config/properties.yml', 'w+') {|f| f.write properties.to_yaml }
+  File.open('test/config/properties.yml', 'w+') do |f|
+    f.write properties.to_yaml
+  end
 end
 

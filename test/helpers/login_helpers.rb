@@ -31,6 +31,7 @@ end
 
 def click_login_button(driver)
   puts "Clicking Log in button"
-  wait_until_visible(driver, :xpath, '//button[contains(.,"Log in")]')
-  driver.find_element(:xpath => '//button[contains(.,"Log in")]').click
+  path = '//button[contains(.,"Log in")]'
+  wait_until_visible(driver, :xpath, path)
+  driver.find_element(:xpath => path).click
 end

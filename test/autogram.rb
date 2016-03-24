@@ -1,5 +1,4 @@
 require_relative "test_helper"
-require_relative "helpers/base_test"
 require_relative "helpers/navigation_helpers"
 require_relative "helpers/login_helpers"
 require_relative "helpers/dashboard_helpers"
@@ -9,7 +8,6 @@ BROWSER = "firefox"
 class Autogram < Minitest::Test
   def setup
     @test_beginning_time = Time.now
-    puts "Running Setup"
     @properties = YAML.load_file("test/config/properties.yml")
     @uris = YAML.load_file("test/config/uris.yml")
     @driver = configure_driver(BROWSER)
@@ -18,7 +16,6 @@ class Autogram < Minitest::Test
   end
 
   def test_login
-    puts "Login Test:"
     navigate_to_login(@driver, @domain, @uris)
 
     puts "Logging in with valid email and password"
@@ -29,7 +26,7 @@ class Autogram < Minitest::Test
     assert(@driver.find_elements(:xpath => username_path).size > 0,
       "FAILURE: Username not appearing on page")
     close_dialog(@driver)
-    navigate_to_dashboard
+    navigate_to_profile
     followers = get_followers
     close_dialog(@driver)
     puts followers
