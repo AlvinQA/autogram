@@ -6,10 +6,11 @@ PICTURES, NERD
 
 This project will add people to your instagram, like their posts regularly, then
 unfollow them if the jerks don't like you back. What kind of jerks wouldn't like
-you back?!
+you back?! You are an ANGEL! 
 
 It will also comment on every x post (set by the user in the properties file)
-with whatever comments you add in your comments file.
+with whatever comments you add in your comments file, eventually, maybe. I 
+haven't decided yet. 
 
 Or whatever.
 
