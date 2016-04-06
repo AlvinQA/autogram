@@ -20,19 +20,19 @@ end
 
 def enter_username(username)
   puts "Entering username: #{username}"
-  wait_until_visible(@driver, :name, 'username')
+  wait_until_visible(:name, 'username')
   @driver.find_element(:name => 'username').send_keys username
 end
 
 def enter_password(password)
   puts "Entering password: HEY! Don't look at my password!"
-  wait_until_visible(@driver, :name, 'password')
+  wait_until_visible(:name, 'password')
   @driver.find_element(:name => 'password').send_keys password
 end
 
 def click_login_button
   puts "Clicking Log in button"
   path = '//button[contains(.,"Log in")]'
-  wait_until_visible(@driver, :xpath, path)
+  wait_until_visible(:xpath, path)
   @driver.find_element(:xpath => path).click
 end

@@ -31,6 +31,41 @@ def update_greylist
   return new_greylist
 end
 
+def load_greylist
+  # this loads everyone you follow
+  puts "----------------------------------------"
+  puts "#{@greylist}: #{@greylist.size}"
+  puts "----------------------------------------"
+  new_greylist = Hash.new
+  new_following = Hash.new
+
+  navigate_to_profile
+  puts "----------------------------------------"
+  puts "nav"
+  puts "----------------------------------------"
+  following = get_following
+
+  @greylist.each do |k,v|
+    if following.include? k
+      new_greylist[k] = @greylist[k]
+      following.delete(k)
+    end
+  end
+
+  following.each do |v|
+    new_following[v] = following[v]
+  end
+
+  @greylist = new_greylist.merge(new_following)
+  puts "----------------------------------------"
+  puts "#{@greylist}: #{@greylist.size}"
+  puts "----------------------------------------"
+
+  File.open('test/config/greylist.yml', 'w+') do |f|
+    f.write new_greylist.to_yaml
+  end
+end
+
 def load_tags
   # This loads the tags string from the properties file, and seperates it into
   # an array
